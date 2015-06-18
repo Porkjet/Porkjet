@@ -3,13 +3,13 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Text;
-//using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace Habitat
 {
 	public class Centrifuge : PartModule
 	{
+		#region CFG parameters
 		
 		[KSPField]
     	public string rotorTransformName = "center";
@@ -25,53 +25,34 @@ namespace Habitat
 		[KSPField]
 		public float flywheelRotationMult = 0f;
 		[KSPField]
-		public float acceleration = 0.005f;
+		public float acceleration = 0.002f;
 		[KSPField]
 		public float habRadius = 0f;
+		[KSPField]
+		public string animationName = "";		// animation used in ModuleAnimateGeneric
+		
+		#endregion
+		
 		[KSPField(isPersistant = true)]
 		private float speedMult = 0f;
 		
-		[KSPField]
-		public string animationName = "";
-		
 		[KSPField(guiActive = true, guiActiveEditor = true, guiFormat = "F2", guiName = "Artificial Gravity", guiUnits = "g", isPersistant = false)]
 		public float currentGeeforce = 0f;
-		private float geeforce = 0f;
-		
-		//[KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animationtime", isPersistant = false)]
-		//public float test = 0f;
+		private float geeforce = 0f;	//info for editor action menu
 		
 		private bool startrot = false;
 		
-		Animation anim;
+		Animation anim;	
 		
-		/*[KSPEvent(guiActive = true, guiName = "Spin", guiActiveEditor = true, guiActiveUnfocused = true, unfocusedRange = 5f)]
-		public void activate()
-		{
-			if(anim[animationName].normalizedTime == 1)
-			{
-				startrot = true;
-				stoprot = false;
-			}
-			else
-			{
-				ScreenMessages.PostScreenMessage("<color=orange>[" + part.partInfo.title + "]: Deploy first!</color>", 5, ScreenMessageStyle.UPPER_LEFT);
-			}
-		}
-		
-		[KSPEvent(guiActive = true, guiName = "Stop", guiActiveEditor = true, guiActiveUnfocused = true, unfocusedRange = 5f)]
-		public void deactivate()
-		{
-			stoprot = true;
-			startrot = false;
-		}*/
-		
+		//display anim normalized time in pupup for testing
+		//[KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animationtime", isPersistant = false)]
+		//public float test = 0f;
 		
 		public override void OnStart(StartState state)
         {
 			rotorTransform = part.FindModelTransform(rotorTransformName);
 			flywheelTransform = part.FindModelTransform(flywheelTransformName);
-			internalTransform = part.InternalModel.FindModelTransform(internalTransformName);			
+			//internalTransform = part.InternalModel.FindModelTransform(internalTransformName);			//doesnt work
 			geeforce = ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM / 30f), 2f)) / 9.81f);
         }
 	
@@ -82,7 +63,7 @@ namespace Habitat
 			
 			rotorTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
 			flywheelTransform.Rotate(new Vector3(0,-6,0) * rotorRPM * speedMult *flywheelRotationMult * Time.deltaTime);
-			internalTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
+			//internalTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
 			currentGeeforce = ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM * speedMult / 30f), 2f)) / 9.81f);
 			
 			if(anim[animationName].normalizedTime == 1f)
@@ -113,18 +94,21 @@ namespace Habitat
 		{
 			string output = "";
 			output += "<b>Artificial gravity: </b> " + ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM / 30f), 2f)) / 9.81f).ToString("0.00") + "g";
-			//output += ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM / 30f), 2f)) / 9.81f).ToString("0.00") + "g";
 			output += "\n<b>Speed of rotation: </b> " + rotorRPM.ToString("0") + "rpm";
 			return output;
 		}
-		
-		
 	}
-
+	
+	
+	
+	//Sirkut's original Habitat Module
+	
+	//TODO - make this work in editor
+	
 	public class DeployableHabitat : PartModule
     {
         [KSPField]
-        public string animationName = "";
+        public string animationName = ""; //animation used by ModuleAnimateGeneric
         [KSPField]
         public int crewCapacityDeployed = 0;
         [KSPField]
@@ -149,16 +133,16 @@ namespace Habitat
 			}
 			return output;
 		}
-        //public void Start()
-        //{
-            //if (!HighLogic.LoadedSceneIsFlight) return;
-        //}
+        public void Start()
+        {
+            if (!HighLogic.LoadedSceneIsFlight) return;
+        }
 
         
         public void Update()
         {
-            //if (HighLogic.LoadedSceneIsFlight)
-            //{
+            if (HighLogic.LoadedSceneIsFlight)
+            {
                 anim = part.FindModelAnimators(animationName).FirstOrDefault();
                 if (anim[animationName].normalizedTime < 1f)
                 {
@@ -187,7 +171,7 @@ namespace Habitat
                             eventname.guiActive = true;
                     }
                 }
-            //}
+            }
             base.OnUpdate();
         }
     }
