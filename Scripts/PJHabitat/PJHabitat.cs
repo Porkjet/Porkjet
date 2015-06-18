@@ -41,12 +41,11 @@ namespace Habitat
 		private float geeforce = 0f;	//info for editor action menu
 		
 		private bool startrot = false;
-		
-		Animation anim;	
+		private Animation anim;	
 		
 		//display anim normalized time in pupup for testing
-		//[KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animationtime", isPersistant = false)]
-		//public float test = 0f;
+		[KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animationtime", isPersistant = false)]
+		public float test = 0f;
 		
 		public override void OnStart(StartState state)
         {
@@ -54,12 +53,12 @@ namespace Habitat
 			flywheelTransform = part.FindModelTransform(flywheelTransformName);
 			//internalTransform = part.InternalModel.FindModelTransform(internalTransformName);			//doesnt work
 			geeforce = ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM / 30f), 2f)) / 9.81f);
+			anim = part.FindModelAnimators(animationName).FirstOrDefault();
         }
 	
 		private void Update()
 		{
-			anim = part.FindModelAnimators(animationName).FirstOrDefault();
-			//test = anim[animationName].normalizedTime;
+			test = anim[animationName].normalizedTime;
 			
 			rotorTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
 			flywheelTransform.Rotate(new Vector3(0,-6,0) * rotorRPM * speedMult *flywheelRotationMult * Time.deltaTime);
@@ -135,14 +134,15 @@ namespace Habitat
 		}
         public void Start()
         {
-            if (!HighLogic.LoadedSceneIsFlight) return;
+            if (!HighLogic.LoadedSceneIsFlight || !HighLogic.LoadedSceneIsEditor) return;
         }
 
         
         public void Update()
         {
-            if (HighLogic.LoadedSceneIsFlight)
+            if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
             {
+				Debug.Log("DeployableHabitat | Update | test1");
                 anim = part.FindModelAnimators(animationName).FirstOrDefault();
                 if (anim[animationName].normalizedTime < 1f)
                 {
@@ -154,7 +154,7 @@ namespace Habitat
                 }
 
 
-                ModuleAnimateGeneric animateModule = (ModuleAnimateGeneric)this.part.GetComponent("ModuleAnimateGeneric");
+                ModuleAnimateGeneric animateModule = this.part.GetComponent<ModuleAnimateGeneric> ();//(ModuleAnimateGeneric)this.part.GetComponent("ModuleAnimateGeneric");
                 if (this.part.protoModuleCrew.Count() > 0)
                 {
                     foreach (BaseEvent eventname in this.part.GetComponent<ModuleAnimateGeneric>().Events)
@@ -172,7 +172,7 @@ namespace Habitat
                     }
                 }
             }
-            base.OnUpdate();
+            //base.OnUpdate();
         }
     }
 }
