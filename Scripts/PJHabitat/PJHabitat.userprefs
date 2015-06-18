@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="PJHabitat.cs">
+    <Files>
+      <File FileName="..\..\..\..\..\Downloads\Habitat_ozraven_05092014\GameData\HabitatPack\Plugins\Habitat.cs" Line="2" Column="1" />
+      <File FileName="F:\KSP parts\habitat\plugin sirkut\Habitat.cs" Line="67" Column="1" />
+      <File FileName="PJHabitat.cs" Line="74" Column="29" />
+      <File FileName="F:\KSP\KSP\Assets\Scripts\Part Scripts\PartModules\ModuleDeployableSolarPanel.cs" Line="269" Column="96" />
+      <File FileName="..\ModuleSpin\ModuleSpin\ModuleSpin.cs" Line="19" Column="1" />
+      <File FileName="F:\KSP\KSP\Assets\Scripts\Part Scripts\PartModules\ModuleAnimateGeneric.cs" Line="275" Column="18" />
+      <File FileName="F:\KSP\KSP\Assets\Scripts\Part Scripts\Part.cs" Line="117" Column="30" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
