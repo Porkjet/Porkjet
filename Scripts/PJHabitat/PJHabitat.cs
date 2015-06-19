@@ -144,7 +144,6 @@ namespace Habitat
 
         public void Update()
         {
-            Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
             {
 
@@ -160,6 +159,7 @@ namespace Habitat
                     Debug.Log("DeployableHabitat | Update | crew capacity deployed");
                 }
 
+                Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
 
                 ModuleAnimateGeneric animateModule = this.part.GetComponent<ModuleAnimateGeneric> ();//(ModuleAnimateGeneric)this.part.GetComponent("ModuleAnimateGeneric");
                 if (this.part.protoModuleCrew.Count() > 0)
