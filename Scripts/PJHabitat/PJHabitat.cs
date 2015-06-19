@@ -44,8 +44,8 @@ namespace Habitat
         private Animation anim;
 
         //display anim normalized time in pupup for testing
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animation normalizedTime = ", isPersistant = false)]
-        public float test = 0f;
+       // [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animation normalizedTime = ", isPersistant = false)]
+        //public float test = 0f;
 
         public override void OnStart(StartState state)
         {
@@ -58,8 +58,8 @@ namespace Habitat
 
         private void Update()
         {
-            test = anim[animationName].normalizedTime;
-            Debug.Log("Animation normalizedTime = " + anim[animationName].normalizedTime);
+            //test = anim[animationName].normalizedTime;
+
 
             rotorTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
             flywheelTransform.Rotate(new Vector3(0,-6,0) * rotorRPM * speedMult *flywheelRotationMult * Time.deltaTime);
@@ -147,6 +147,9 @@ namespace Habitat
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
             {
 
+                Debug.Log("Animation normalizedTime = " + anim[animationName].normalizedTime);
+                Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
+
                 if (anim[animationName].normalizedTime == 0f)
                 {
                     this.part.CrewCapacity = crewCapacityRetracted;
@@ -158,8 +161,6 @@ namespace Habitat
                     this.part.CrewCapacity = crewCapacityDeployed;
                     Debug.Log("DeployableHabitat | Update | crew capacity deployed");
                 }
-
-                Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
 
                 ModuleAnimateGeneric animateModule = this.part.GetComponent<ModuleAnimateGeneric> ();//(ModuleAnimateGeneric)this.part.GetComponent("ModuleAnimateGeneric");
                 if (this.part.protoModuleCrew.Count() > 0)
