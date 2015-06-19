@@ -44,7 +44,7 @@ namespace Habitat
         private Animation anim;
 
         //display anim normalized time in pupup for testing
-        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animationtime", isPersistant = false)]
+        [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Animation normalizedTime = ", isPersistant = false)]
         public float test = 0f;
 
         public override void OnStart(StartState state)
@@ -59,6 +59,7 @@ namespace Habitat
         private void Update()
         {
             test = anim[animationName].normalizedTime;
+            Debug.Log("Animation normalizedTime = " + anim[animationName].normalizedTime);
 
             rotorTransform.Rotate(new Vector3(0,6,0) * rotorRPM * speedMult * Time.deltaTime);
             flywheelTransform.Rotate(new Vector3(0,-6,0) * rotorRPM * speedMult *flywheelRotationMult * Time.deltaTime);
@@ -143,7 +144,7 @@ namespace Habitat
 
         public void Update()
         {
-            Debug.Log(this.part.CrewCapacity);
+            Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
             {
 
@@ -168,7 +169,7 @@ namespace Habitat
                         if(eventname.guiName == animateModule.endEventGUIName)
                         {
                             eventname.guiActive = false;
-                            Debug.Log("cannot retract");
+                            Debug.Log("DeployableHabitat | Update | CAN NOT retract");
                         }
                     }
                 }
@@ -179,7 +180,7 @@ namespace Habitat
                         if (eventname.guiName == animateModule.endEventGUIName)
                         {
                             eventname.guiActive = true;
-                            Debug.Log("can retract");
+                            Debug.Log("DeployableHabitat | Update | CAN retract");
                         }
                     }
                 }
