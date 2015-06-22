@@ -2,7 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="PJHabitat.cs">
     <Files>
-      <File FileName="PJHabitat.cs" Line="107" Column="73" />
+      <File FileName="..\..\..\KSP\KSP\Assets\Scripts\Part Scripts\PartModules\ModuleGrappleNode.cs" Line="66" Column="34" />
+      <File FileName="PJHabitat.cs" Line="52" Column="74" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

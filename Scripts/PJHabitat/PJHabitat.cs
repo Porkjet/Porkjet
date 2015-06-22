@@ -17,9 +17,7 @@ namespace Habitat
         [KSPField]
         public string flywheelTransformName = "flywheel";
         public Transform flywheelTransform;
-        [KSPField]
-        public string internalTransformName = "internal";
-        public Transform internalTransform;
+
         [KSPField]
         public float rotorRPM = 0f;
         [KSPField]
@@ -51,7 +49,7 @@ namespace Habitat
         {
             rotorTransform = part.FindModelTransform(rotorTransformName);
             flywheelTransform = part.FindModelTransform(flywheelTransformName);
-            //internalTransform = part.InternalModel.FindModelTransform(internalTransformName);            //doesnt work
+            //internalTransform = internalModel.FindModelTransform(internalTransformName);            //doesnt work here
             geeforce = ((habRadius * Mathf.Pow((Mathf.PI * rotorRPM / 30f), 2f)) / 9.81f);
             anim = part.FindModelAnimators(animationName).FirstOrDefault();
         }
@@ -100,6 +98,29 @@ namespace Habitat
     }
 
 
+    public class CentrifugeInternal : InternalModule
+    {
+        [KSPField]
+        public string internalTransformName = "internal";
+        public Transform internalTransform;
+
+        public void Start()
+        {
+            internalTransform = internalModel.FindModelTransform(internalTransformName);
+        }
+
+        private void Update()
+        {
+            internalTransform.Rotate(new Vector3(0,6,0) * 10 * 1 * Time.deltaTime);
+        }
+    }
+
+
+
+
+
+
+
 
     //Sirkut's original Habitat Module
 
@@ -140,15 +161,16 @@ namespace Habitat
             anim = part.FindModelAnimators(animationName).FirstOrDefault();
             if (!HighLogic.LoadedSceneIsFlight || !HighLogic.LoadedSceneIsEditor) return;
         }
-
+//GameEvents.onEditorShipModified.Fire(EditorLogic.fetch.ship);
 
         public void Update()
         {
             if (HighLogic.LoadedSceneIsFlight || HighLogic.LoadedSceneIsEditor)
             {
-
+                //GameEvents.onEditorShipModified.Fire(EditorLogic.fetch.ship);
                 Debug.Log("Animation normalizedTime = " + anim[animationName].normalizedTime);
                 Debug.Log("Crew Capacity = " + this.part.CrewCapacity);
+                Debug.Log("protoModuleCrew.Count = " + this.part.protoModuleCrew.Count());
 
                 if (anim[animationName].normalizedTime == 0f)
                 {
